@@ -112,4 +112,14 @@ Dockerfile
 2. API will be available at `http://localhost:5118/api`.
 
 ---
+
+## React App 
+1. make sure api is running
+2. npm run dev
+
  
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+---

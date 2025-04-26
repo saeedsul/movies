@@ -27,6 +27,7 @@ jobs:
       }
     displayName: 'Check if .NET SDK is installed'
 
+  # Install .NET SDK if not installed (this step will execute only if not already installed)
   - task: UseDotNet@2
     displayName: 'Use .NET $(dotnetVersion)'
     inputs:
@@ -53,7 +54,7 @@ jobs:
       projects: '**/*.csproj'
  
  
-  # 1. Run tests 
+  # 1. Run tests without duplicate arguments
   - task: DotNetCoreCLI@2
     displayName: 'Run xUnit Tests'
     inputs:
@@ -67,7 +68,8 @@ jobs:
       testResultsFormat: 'VSTest'
       testResultsFiles: 'test_results.trx'
       searchFolder: '$(testResultsFolder)'
-      failTaskOnFailedTests: true
+      failTaskOnFailedTests: true 
+
 
   # Publish API.
   - task: DotNetCoreCLI@2
@@ -77,6 +79,28 @@ jobs:
       arguments: '--configuration $(buildConfiguration) --output $(artifactFolder)/Api'
       projects: '**/Api/*.csproj'
 
+  # UX Build steps...
+  - task: NodeTool@0
+    displayName: 'Install Node $(nodeVersion)'
+    inputs:
+      versionSpec: $(nodeVersion)
+
+  - script: npm install
+    displayName: 'Install UX Dependencies'
+    workingDirectory: '$(Build.SourcesDirectory)/UX'
+
+  - script: npm run build
+    displayName: 'Build UX'
+    workingDirectory: '$(Build.SourcesDirectory)/UX'
+
+  # Artifact packaging...
+  - task: CopyFiles@2
+    displayName: 'Copy UX Files to Artifact Folder'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/UX/dist'
+      TargetFolder: '$(artifactFolder)/UX'
+      CleanTargetFolder: true
+
   - task: ArchiveFiles@2
     displayName: 'Package API'
     inputs:
@@ -84,7 +108,15 @@ jobs:
       archiveType: 'zip'
       archiveFile: '$(artifactFolder)/app_packages/Api.zip'
       replaceExistingArchive: true
- 
+
+  - task: ArchiveFiles@2
+    displayName: 'Package UX'
+    inputs:
+      rootFolderOrFile: '$(artifactFolder)/UX'
+      archiveType: 'zip'
+      archiveFile: '$(artifactFolder)/app_packages/UX.zip'
+      replaceExistingArchive: true
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Deployment Artifacts'
     inputs:
