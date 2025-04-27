@@ -104,72 +104,8 @@ namespace Api.Repositories
                 "releasedate" => isAscending
                     ? query.OrderBy(m => m.ReleaseDate)
                     : query.OrderByDescending(m => m.ReleaseDate),
-                _ => query // Default: no sorting
+                _ => query
             };
         }
-
-        //public async Task<MovieWrapper> GetMovies(QueryParametersDto query)
-        //{
-        //    var moviesQuery = _context.Movies.AsQueryable();
-
-        //    if (!string.IsNullOrWhiteSpace(query.Title))
-        //    {
-        //        // Using EF.Functions.Like for SQL translation
-        //        moviesQuery = moviesQuery.Where(m => EF.Functions.Like(m.Title, $"%{query.Title}%"));
-        //    }
-
-        //    if (!string.IsNullOrWhiteSpace(query.Genre))
-        //    { 
-        //        moviesQuery = moviesQuery.Where(m => EF.Functions.Like(m.Genre, $"%{query.Genre}%"));
-        //    }
-
-        //    if (query.ReleaseYear.HasValue)
-        //    { 
-        //        moviesQuery = moviesQuery.Where(m => m.ReleaseDate.HasValue && m.ReleaseDate.Value.Year == query.ReleaseYear.Value);
-        //    }
-
-        //    // Sorting based on SortBy field and SortOrder
-        //    if (query.SortBy.Equals("Title", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        moviesQuery = query.SortOrder.Equals("asc", StringComparison.OrdinalIgnoreCase)
-        //            ? moviesQuery.OrderBy(m => m.Title)
-        //            : moviesQuery.OrderByDescending(m => m.Title);
-        //    }
-        //    else if (query.SortBy.Equals("ReleaseDate", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        moviesQuery = query.SortOrder.Equals("asc", StringComparison.OrdinalIgnoreCase)
-        //            ? moviesQuery.OrderBy(m => m.ReleaseDate)
-        //            : moviesQuery.OrderByDescending(m => m.ReleaseDate);
-        //    }
-
-        //    moviesQuery = moviesQuery.Where(m => !string.IsNullOrEmpty(m.Title) && !string.IsNullOrEmpty(m.Genre));
-
-        //    int totalCount = await moviesQuery.CountAsync();
-
-        //    // Paginate the results
-        //    var movies = await moviesQuery
-        //        .Skip((query.Page - 1) * query.Limit)   
-        //        .Take(query.Limit)                     
-        //        .Select(m => new MovieDto
-        //        {
-        //            Title = m.Title,
-        //            Overview = m.Overview,
-        //            ReleaseDate = m.ReleaseDate,
-        //            Genre = m.Genre,
-        //            PosterUrl = m.PosterUrl,
-        //            VoteAverage = m.VoteAverage,
-        //            VoteCount = m.VoteCount,
-        //            OriginalLanguage = m.OriginalLanguage,
-        //            Popularity = m.Popularity
-        //        })
-        //        .ToListAsync();
-
-        //    return new MovieWrapper
-        //    {
-        //        Movies = movies,
-        //        TotalRecords = totalCount,
-        //        SearchParameters = query
-        //    };
-        //} 
     }
 }
