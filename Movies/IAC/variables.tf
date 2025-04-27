@@ -30,7 +30,7 @@ variable "api_container_name" {
 
 variable "api_image_name" {
   description = "API Docker image name"
-  default     = "movie:10"
+  default     = "movie:11"
 } 
 
 variable "api_dockerfile" {
@@ -43,5 +43,19 @@ variable "db_volume_name" {
   type = string      
 }
 
- 
+variable "react_container_name" {
+  description = "React app container name"
+  default     = "movie_app_container"
+}
+
+variable "react_image_name" {
+  description = "React app Docker image name"
+  default     = "movie-react-app:11"
+}
+
+variable "react_dockerfile" {
+  description = "Path to the React Dockerfile"
+  default     = "ux/Dockerfile"
+}
+
 

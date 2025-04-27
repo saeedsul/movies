@@ -15,7 +15,42 @@ pool:
 jobs:
 - job: Build_Test_Publish
   displayName: 'Build, Test and Publish Artifacts'
-  steps:
+  steps: 
+
+  # UX Build steps...
+  - task: NodeTool@0
+    displayName: 'Install Node $(nodeVersion)'
+    inputs:
+      versionSpec: $(nodeVersion)
+
+  - script: |
+      echo "Listing contents of $(Build.SourcesDirectory)"
+      dir $(Build.SourcesDirectory)
+    displayName: 'Check contents of Sources Directory'
+
+  # Ensure UX folder exists before proceeding
+  - script: |
+      echo "Listing contents of UX folder"
+      dir "$(Build.SourcesDirectory)/Movies/UX"
+    displayName: 'Check contents of UX folder'
+
+
+  - script: npm install
+    displayName: 'Install UX Dependencies'
+    workingDirectory: '$(Build.SourcesDirectory)/Movies/UX'
+
+  - script: npm run build
+    displayName: 'Build UX'
+    workingDirectory: '$(Build.SourcesDirectory)/Movies/UX'
+
+  # Artifact packaging...
+  - task: CopyFiles@2
+    displayName: 'Copy UX Files to Artifact Folder'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/Movies/UX/dist'
+      TargetFolder: '$(artifactFolder)/UX'
+      CleanTargetFolder: true
+
   # Check if .NET SDK is already installed
   - powershell: |
       $dotnetInstalled = Get-Command dotnet -ErrorAction SilentlyContinue
@@ -54,7 +89,6 @@ jobs:
       projects: '**/*.csproj'
  
  
-  # 1. Run tests 
   # 1. Run tests  
   - task: DotNetCoreCLI@2
     displayName: 'Run xUnit Tests'
@@ -69,9 +103,7 @@ jobs:
       testResultsFormat: 'VSTest'
       testResultsFiles: 'test_results.trx'
       searchFolder: '$(testResultsFolder)'
-      failTaskOnFailedTests: true
-
-
+      failTaskOnFailedTests: true 
 
   # Publish API.
   - task: DotNetCoreCLI@2
@@ -80,29 +112,6 @@ jobs:
       command: 'publish'
       arguments: '--configuration $(buildConfiguration) --output $(artifactFolder)/Api'
       projects: '**/Api/*.csproj'
-
- 
-  # UX Build steps...
-  - task: NodeTool@0
-    displayName: 'Install Node $(nodeVersion)'
-    inputs:
-      versionSpec: $(nodeVersion)
-
-  - script: npm install
-    displayName: 'Install UX Dependencies'
-    workingDirectory: '$(Build.SourcesDirectory)/UX'
-
-  - script: npm run build
-    displayName: 'Build UX'
-    workingDirectory: '$(Build.SourcesDirectory)/UX'
-
-  # Artifact packaging...
-  - task: CopyFiles@2
-    displayName: 'Copy UX Files to Artifact Folder'
-    inputs:
-      SourceFolder: '$(Build.SourcesDirectory)/UX/dist'
-      TargetFolder: '$(artifactFolder)/UX'
-      CleanTargetFolder: true
 
   - task: ArchiveFiles@2
     displayName: 'Package API'
