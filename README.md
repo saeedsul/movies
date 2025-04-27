@@ -80,6 +80,7 @@ azure-pipeline
 Dockerfile
 /
 |-- Api/             # ASP.NET Core Web API project
+|-- DatabaseSeeder/  # console app used to seed database in terraform (IAC)
 |-- IAC/             # Infrastructure as Code (Terraform scripts)
 |-- Test/            # Unit and Integration tests
 ```
@@ -93,7 +94,9 @@ Dockerfile
 - terraform plan
 - terraform apply --auto-approve
 - this will build api project and great the api contianer and the sql db container
-- open a browser and go to http://localhost:80 
+- open a browser and go to http://localhost:8001 
+
+- DatabaseSeeder will run container to seed database from csv file embeded.
 
 ---
 
@@ -116,7 +119,15 @@ Dockerfile
 ## React App 
 1. make sure api is running
 2. npm run dev
+3. open the browser with the given localhost
 
+![alt text](image-5.png)
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
  
 ![alt text](image.png)
 
