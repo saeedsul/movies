@@ -17,8 +17,12 @@ class Program
                             .AddJsonFile("appsettings.json")
                             .Build();
 
-        string connectionString = configuration.GetConnectionString("dbConnectionString");
+        string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"); 
 
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            connectionString = configuration.GetConnectionString("dbConnectionString");
+        }
         // Initialize DbContext
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         optionsBuilder.UseSqlServer(connectionString);

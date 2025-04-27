@@ -19,7 +19,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnectionString")));
 
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-builder.Services.AddScoped<IMovieRepository, MovieRepository>(); 
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React dev server
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -30,10 +40,12 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
- 
- 
 
-app.UseHttpsRedirection();
+
+
+app.UseCors("ReactPolicy");
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

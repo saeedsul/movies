@@ -27,13 +27,17 @@ interface MovieResponse {
     success: boolean,
     message?: string | null;
     data: {
-        movies: [];
+        movies: Movie[];
         totalRecords: number
     }; 
 }
 
-export const getAll = async (params: Filters): Promise<MovieResponse> => {
-    const response = await axios.get<MovieResponse>("/movie/search", { params });
-    return response.data;
+export const getAll = async (params: Filters): Promise<MovieResponse | null> => {
+    try {
+        const response = await axios.get<MovieResponse>("/api/movie/search", { params });
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch movies:", error);
+        return null;
+    }
 };
-  
