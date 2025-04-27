@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ux", "UX\ux.esproj", "{AF641ACB-6712-4BC4-8013-AE10B4936AC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseSeeder", "DatabaseSeeder\DatabaseSeeder.csproj", "{F157D3B6-1B11-836A-E377-3380BBA70C51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{AF641ACB-6712-4BC4-8013-AE10B4936AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF641ACB-6712-4BC4-8013-AE10B4936AC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF641ACB-6712-4BC4-8013-AE10B4936AC6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F157D3B6-1B11-836A-E377-3380BBA70C51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F157D3B6-1B11-836A-E377-3380BBA70C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F157D3B6-1B11-836A-E377-3380BBA70C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F157D3B6-1B11-836A-E377-3380BBA70C51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
